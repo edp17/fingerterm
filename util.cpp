@@ -102,7 +102,12 @@ void Util::setTerm(Terminal *term)
 
 void Util::openNewWindow()
 {
-    QProcess::startDetached("/usr/bin/fingerterm");
+    const char *appPath = qPrintable(QGuiApplication::applicationFilePath());
+    int pid = fork();
+
+    if (pid == 0) {
+        execl(appPath, appPath, (char*)NULL);
+    }
 }
 
 QString Util::configPath()
